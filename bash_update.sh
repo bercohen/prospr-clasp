@@ -18,30 +18,33 @@ export CLASP_CREDENTIALS=$service_account_key_path
 # Library version (default to "1" if not provided)
 library_version=${1:-1}
 
+
 # Update each project
 for script_id in "${script_ids[@]}"; do
-  # Create a temporary directory
-  temp_dir=$(mktemp -d)
+  # Ensure the project folder exists or create it
+  tmp_folder="$clasp_folder/.tmp/$script_id"
+  if [ ! -d "$tmp_folder" ]; then
+    mkdir -p "$tmp_folder"
+  fi
 
-  # Clone the project with the existing configuration into the temporary directory
-  clasp clone "$script_id" --rootDir "$temp_dir"
+  # Clone the project with the existing configuration
+  clasp clone "$script_id" --rootDir "$tmp_folder"
 
-  # Copy the master appsscript.json to the temporary directory
-  cp "$clasp_folder/appsscript.json" "$temp_dir/"
+  # Copy the master appsscript.json to the project folder
+  cp "$clasp_folder/appsscript.json" "$tmp_folder/"
 
-  # Navigate to the temporary directory
-  cd "$temp_dir" || exit 1
+  # Navigate to the project folder
+  cd "$tmp_folder" || exit 1
 
   # Pull the latest code without creating a new configuration
   clasp pull
 
   # Run the Node.js script to update appsscript.json with the provided library version
-  node "$clasp_folder/update_appsscript.js" "$temp_dir" "$library_version"
+  node "$clasp_folder/update_appsscript.js" "$tmp_folder" "$library_version"
 
   # Push the changes
   clasp push -f
 
-  # Clean up the temporary directory
+  # Navigate back to the original directory
   cd "$clasp_folder" || exit 1
-  rm -r "$temp_dir"
 done
