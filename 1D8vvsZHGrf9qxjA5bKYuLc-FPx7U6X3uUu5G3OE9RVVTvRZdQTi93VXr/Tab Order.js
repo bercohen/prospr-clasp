@@ -1,3 +1,0 @@
-function setOrder(){
-ProsprScript.setOrder()
-}

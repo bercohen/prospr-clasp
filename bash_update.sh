@@ -15,6 +15,9 @@ service_account_key_path="/Users/bercohen/Downloads/prospr-testing-368b09987084.
 # Set CLASP_CREDENTIALS variable
 export CLASP_CREDENTIALS=$service_account_key_path
 
+# Library version (default to "1" if not provided)
+library_version=${1:-1}
+
 # Update each project
 for script_id in "${script_ids[@]}"; do
   # Ensure the project folder exists or create it
@@ -34,11 +37,11 @@ for script_id in "${script_ids[@]}"; do
   # Pull the latest code without creating a new configuration
   clasp pull
 
-  # Run the Node.js script to update appsscript.json
-  node "$clasp_folder/update_appsscript.js" "$clasp_folder/$script_id"
+  # Run the Node.js script to update appsscript.json with the provided library version
+  node "$clasp_folder/update_appsscript.js" "$clasp_folder/$script_id" "$library_version"
 
   # Push the changes
-  clasp push -f
+  clasp push -f appsscript.json
 
   # Navigate back to the original directory
   cd - || exit 1
