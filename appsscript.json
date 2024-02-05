@@ -1,0 +1,23 @@
+{
+  "timeZone": "America/New_York",
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "DEPRECATED_ES5",
+  "dependencies": {
+    "libraries": [
+      {
+        "userSymbol": "ProsprScript",
+        "version": "3",
+        "libraryId": "1qh22xRrNwqvua3KPShzG2RTQRIbCa1mQVvyj2nYzSKxIEnXQYBEEJsHK",
+        "developmentMode": false
+      }
+    ]
+  },
+  "sheets": {
+    "macros": [
+      {
+        "menuName": "Untitled Macro",
+        "functionName": "UntitledMacro"
+      }
+    ]
+  }
+}
